@@ -1,0 +1,10 @@
+# Compiled binaries (Linux has no extension, so list explicitly)
+main
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Rust
+**/target/
