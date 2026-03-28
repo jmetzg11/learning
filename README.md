@@ -12,6 +12,27 @@
 - Let's Go
 - Let's Go Further
 
-# Other
+## Architecture
+
+- Cosmic Python
+- Designing Data-Intesnive Application
+
+## Other
 
 - D3.js in Action
+
+## Final Project
+
+Modern Treasury: Accountoing For Developers
+
+- Build along with Go
+- UI to hit endpoints and display grapsh
+- Computation done in temporal
+
+## Follow Ups?
+
+- A Philosophy of Software Design
+- Release It!
+- Database Internals
+- hightscalability.com
+- https://github.com/donnemartin/system-design-primer
