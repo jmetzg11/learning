@@ -15,7 +15,7 @@
 ## Architecture
 
 - Cosmic Python
-- Designing Data-Intesnive Application
+- Designing Data-Intensive Application
 
 ## Other
 
@@ -36,3 +36,10 @@ Modern Treasury: Accountoing For Developers
 - Database Internals
 - hightscalability.com
 - https://github.com/donnemartin/system-design-primer
+  embedded stuff
+- Making Embedded Systems
+- Embedonomicon
+- Embassy.dev
+- Ferrocene / Ferrous Systems Blog
+- Building Real-World Embedded Systems with Rust
+- Simplified Embedded Rust
