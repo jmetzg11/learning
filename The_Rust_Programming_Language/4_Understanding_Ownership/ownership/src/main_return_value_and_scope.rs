@@ -1,6 +1,6 @@
 fn main() {
     let s1 = String::from("hello");
-    let (s2, len) = calculate_length(s1);
+    let (s2, len) = calculate_length(s1); // ugly tuple that could be avoided with reference
     println!("The lenght of '{s2}' is {len}")
 }
 
