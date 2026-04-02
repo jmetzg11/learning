@@ -14,7 +14,7 @@
 
 ## Architecture
 
-- Cosmic Python
+- Cosmic Python (do in python and go)
 - Designing Data-Intensive Application
 
 ## Other
@@ -26,7 +26,7 @@
 Modern Treasury: Accountoing For Developers
 
 - Build along with Go
-- UI to hit endpoints and display grapsh
+- UI to hit endpoints and display D3 graphs
 - Computation done in temporal
 
 ## Follow Ups?
