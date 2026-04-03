@@ -80,3 +80,45 @@ func randomPort() int {
 }
 
 // Functional options pattern
+type options struct {
+	port *int
+}
+
+type Option func(options *options) error
+
+func WithPort(port int) Option{
+	return func(options *options) err {
+		if port < 0 {
+			return errors.New("port should be positive")
+		}
+		options.port = &port
+		return nil
+	}
+}
+
+func NewServer(add string, opts ..Option) (**http.Server, error) {
+	var options options
+	for _, opt := range opts {
+		err := opt(&options) // calls each option, which results in modifying the common options struct
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	var port int
+	if options.port == nil {
+		port = defaultHTTPPort
+	} else {
+		if *options.port == 0 {
+			port = randomPort()
+		} else {
+			port = *options.port
+		}
+	}
+}
+
+fun main() {
+	// srv, err := NewServer("localhost")
+	srv, err := NewServer("localhost", WithPort(8080))
+	// ...
+}
