@@ -1,0 +1,4 @@
+Using linters can make our code more robust and detect potential errors
+
+
+use linters and formatters. golangci-lint has many on top so they run in parrelle.
