@@ -27,8 +27,7 @@ Modern Treasury: Accountoing For Developers
 
 - Build along with Go
 - UI to hit endpoints and display D3 graphs
-- Computation done in temporal
-- Make it IoT?
+- Deploy demo as a learning tool
 
 ## Follow Ups?
 
