@@ -1,11 +1,5 @@
 # learning
 
-## Rust
-
-- The Rust Programming Language
-- Rust Embedded MB2 Discovery Book
-- The Embedded Rust Book
-
 ## Go
 
 - 100 Go Mistakes
@@ -28,6 +22,12 @@ Modern Treasury: Accountoing For Developers
 - Build along with Go
 - UI to hit endpoints and display D3 graphs
 - Deploy demo as a learning tool
+
+## Rust
+
+- The Rust Programming Language
+- Rust Embedded MB2 Discovery Book
+- The Embedded Rust Book
 
 ## Follow Ups?
 
