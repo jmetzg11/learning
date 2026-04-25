@@ -22,7 +22,7 @@ func main() {
 	// Solution
 	err := query()
 	if err != nil {
-		if errors.Is(err, squlErrNoRows) {
+		if errors.Is(err, sql.ErrNoRows) {
 			// do something from sentinel error
 		} else {
 			// unexpected error, handle differently
