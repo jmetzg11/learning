@@ -1,0 +1,14 @@
+A thread is the smallest unit of processing that an OS can perform. 
+
+concurrent - two or more threas can start, run and complete in overlapping time periods. 
+parallel - the same task can be executed multiple times at once 
+
+CPU - switching from one thread to another -> context switching. 
+moves from an executing state to a runnable state. 
+
+goroutines -> application-level threads. context switching a goroutine is 80-90% faster than on a CPU 
+G -> Goroutine 
+M -> OS thread (machine)
+P -> CPU core (processor)
+
+Each M is assigned to a P by OS scheduler. Each G runs on a M. GOMAXPROCS defines the limit of Ms in charge of executing user-level code simultaneously. Default is the number of avaialbe CPU cores. 
