@@ -1,0 +1,17 @@
+10 customers, 1 waiter, 1 coffe machine 
+
+Parallel -> doing thing multiple times at once 
+10 customers, 2 waiters, 2 coffe machines
+
+concurrency -> based on structure 
+5 customer in order queue, 5 customer in waiting queue, 1 waiter taking orders, 1 waiter making the coffee, 1 coffe machine 
+3 threads (taking orders, grinding beans, coffee machine) that all must communicate with each other 
+
+concurrent + parallel, concurrency enables parallelism
+customers in order queue 
+customers in waiting queue
+1 worker taking orders 
+2 workers grinding beans 
+3 machines making coffee
+
+Concurrency is about dealing with lots of things at once. Parallelsim is about doing lots of things at once. 
