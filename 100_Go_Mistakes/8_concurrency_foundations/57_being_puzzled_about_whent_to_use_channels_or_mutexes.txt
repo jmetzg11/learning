@@ -1,0 +1,24 @@
+channels are a communication mechanism that allow us to connect concurrent goroutines. 
+Channels can be:
+Unbuffered - the sender goroutine blocks until the receiver goroutine is ready 
+Buffered - The sender goroutine blocks only when the buffer is full 
+
+G1
+|   -> G3
+G2
+
+G1 and G2 are parallel, all are concurrent. 
+
+G1 and G2 need to communicate/synchronize with each other via mutexes
+
+Concurrent goroutines have to coordinate and orchestrate. Eg, G3 needs to aggregate results from both G1 and G2. This coordination is done in channels. 
+
+Channels can also be used to communicate when a resource ownership can be transfered. 
+
+Mutexes when we want to share a state or access a shared resource, it ensures exclusive access to this resources. 
+
+Channels are for signaling with or without data. Used for Coordination or ownershitp transfer should be achieved via channels. 
+
+In general:
+Paralle -> Mutexes 
+Concurrent -> channels 
