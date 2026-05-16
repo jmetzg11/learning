@@ -20,5 +20,5 @@ Mutexes when we want to share a state or access a shared resource, it ensures ex
 Channels are for signaling with or without data. Used for Coordination or ownershitp transfer should be achieved via channels. 
 
 In general:
-Paralle -> Mutexes 
+Parallel -> Mutexes 
 Concurrent -> channels 

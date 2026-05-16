@@ -1,6 +1,6 @@
 10 customers, 1 waiter, 1 coffe machine 
 
-Parallel -> doing thing multiple times at once 
+Parallel -> doing things multiple times at once 
 10 customers, 2 waiters, 2 coffe machines
 
 concurrency -> based on structure 
