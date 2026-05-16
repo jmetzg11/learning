@@ -1,6 +1,7 @@
 # learning
 
 ## Go
+https://blainsmith.com/articles/just-fucking-use-go/
 
 - 100 Go Mistakes
 - Let's Go

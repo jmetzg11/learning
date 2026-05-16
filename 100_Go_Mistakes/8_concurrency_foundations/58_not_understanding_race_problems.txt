@@ -1,0 +1,128 @@
+Data Race - two or more goroutines simultaneously access the same memroy location and at least on is writing 
+
+i := 0 
+
+go func() {
+    i++
+}()
+
+go func() {
+    i++
+}()
+
+Compiler will warn of race condition 
+
+use sync/atomic package (doesn't work with slices, maps and structs)
+go func() {
+    atomic.AddInt64(&i, 1)
+}()
+
+go func() {
+    atomic.AddInt64(&i, 1)
+}()
+
+Use Mutex (mutual exlusion) 
+mutex := sync.Mutex()
+
+go func() {
+    mutex.Lock()
+    i++ 
+    mutex.Unlock()
+}
+
+go func() {
+    mutex.Lock()
+    i++ 
+    mutex.Unlock()
+}
+
+Communication across the goroutines with channel 
+
+i := 0 
+ch := make(chan int)
+
+go func() {
+    ch <- 1 
+}()
+
+go func() {
+    ch <- 1 
+}()
+
+i += <-ch 
+i += <-ch 
+
+Race Condition - based on execution order, not accessing the same memory at once, non deterministic results
+
+i := 0 
+mutex := sync.Mutex{}
+
+go func() {
+    mutex.Lock()
+    defer mutex.Unlock()
+    i = 1 
+} 
+
+go func() {
+    mutex.Lock()
+    defer mutex.Unlock()
+    i = 2 
+}
+
+THE GO MEMORY MODEL 
+
+// no race 
+i := 0 
+go func() {
+    i++
+}
+
+// race 
+i := 0 
+go func() {
+    i++
+}()
+fmt.Println(i)
+
+// no race - channel send/receive is a sync point (happens-before)
+i := 0
+ch := make(chan struct{})  // unbuffered: send blocks until receive
+go func() {
+    <-ch                   // blocks here until main sends
+    fmt.Println(i)         // prints 1 (i++ happened-before this)
+}()
+i++                        // i = 1
+ch <- struct{}{}           // rendezvous: unblocks the goroutine
+
+variable increment < channel send < channel receive < variable read 
+
+// no race - close(ch) is also a sync point (happens-before any receive)
+i := 0
+ch := make(chan struct{})
+go func() {
+    <-ch                   // receive on closed chan returns zero value immediately
+    fmt.Println(i)         // prints 1
+}()
+i++                        // i = 1
+close(ch)                  // unblocks goroutine without sending a value
+
+
+// RACE - buffered channel doesn't sync this way
+i := 0
+ch := make(chan, struct{}, 1)  // buffer size 1
+go func() {
+    i = 1
+    <- ch                       // receive happens AFTER main's send returns
+}()
+ch <- struct{}{}                // doesn't block (buffer has room) - no rendezvous
+fmt.Println(1)                  // may run before goroutine's i = 1
+
+// no race - unbuffered send blocks until receive (rendezvous)
+i := 0
+ch := make(chan struct{})
+go func() {
+    i = 1                       // happens-before the receive below
+    <- ch
+}()
+ch <- struct{}{}                // blocks until goroutine's <-ch runs
+fmt.Prinln(i)                   // prints 1 - i = 1 is guaranteed visible
