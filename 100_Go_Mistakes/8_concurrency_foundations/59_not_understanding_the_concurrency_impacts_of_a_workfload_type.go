@@ -1,0 +1,87 @@
+//go:build ignore
+
+package main
+
+import (
+	"fmt"
+	"io"
+	"runtime"
+	"sync"
+	"sync/atomic"
+)
+
+// Execution time of a workload is limited by one of:
+//   - speed of the CPU      -> CPU-bound (e.g. merge sort)
+//   - speed of I/O          -> I/O-bound (API/DB calls)
+//   - available memory      -> memory-bound
+
+// stub for example
+func task(b []byte) int { return len(b) }
+
+// --- sequential version ---
+func readSequential(r io.Reader) (int, error) {
+	count := 0
+	for {
+		b := make([]byte, 1024)
+		_, err := r.Read(b)
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
+			return 0, err
+		}
+		count += task(b)
+	}
+	return count, nil
+}
+
+// --- worker-pooling pattern ---
+func readWorkerPool(r io.Reader) (int, error) {
+	var count int64                       // shared counter, written by all workers
+	wg := sync.WaitGroup{}                // wait for all workers to finish
+	var n = 10                            // pool size: 10 workers
+
+	ch := make(chan []byte, n)            // buffered so producer can stay ahead
+	wg.Add(n)                             // expecting n Done() calls
+
+	// --- spin up n workers (CONSUMERS) ---
+	for i := 0; i < n; i++ {
+		go func() {
+			defer wg.Done()
+			for b := range ch {           // pulls until ch is closed AND drained
+				v := task(b)
+				atomic.AddInt64(&count, int64(v))  // safe concurrent add
+			}
+		}()
+	}
+
+	// --- main loop (PRODUCER) reads + dispatches ---
+	for {
+		b := make([]byte, 1024)
+		_, err := r.Read(b)               // book elided this with "// Read from r to b"
+		if err != nil {
+			if err == io.EOF {
+				break                     // done reading -> exit producer loop
+			}
+			return 0, err
+		}
+		ch <- b                           // hand chunk to a free worker
+	}
+	close(ch)                             // signal workers: no more work -> range exits
+	wg.Wait()                             // block until all workers Done()
+	return int(count), nil
+}
+
+// flow: producer reads chunks -> sends to ch -> 10 workers race to pull -> process in parallel
+// close(ch) is the "we're done" signal; wg.Wait is the "everyone finished cleaning up" signal
+
+// how to pick n?
+//   if I/O bound  -> think about external systems' limits
+//   if CPU bound  -> figure out what the system can handle
+//
+// always validate assumptions with benchmarks.
+
+func main() {
+	n := runtime.GOMAXPROCS(0)
+	fmt.Println(n)
+}
