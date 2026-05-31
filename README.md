@@ -24,11 +24,14 @@ Modern Treasury: Accountoing For Developers
 - UI to hit endpoints and display D3 graphs
 - Deploy demo as a learning tool
 
-## Rust
+## IoT
 
-- The Rust Programming Language
-- Rust Embedded MB2 Discovery Book
-- The Embedded Rust Book
+- [Microcontroller Embedded C Programming](https://fastbitlab.com/courses/microcontroller-embedded-c-programming-absolute-beginners)
+- [Embedded Systems Programming on ARM Cortext-M3/M4 Processor](https://fastbitlab.com/courses/embedded-systems-programming-on-arm-cortex-m3-m4-processor)
+- [Mastering Microcontroller and Embedded Driver Development (MCU1)](https://fastbitlab.com/courses/mastering-microcontroller-and-embedded-driver-development)
+- [Mastering Microcontroller: Timers, PWM, CAN, Low Power (MCU2)](https://fastbitlab.com/courses/mastering-microcontroller-timers-pwm-can-low-power-mcu2)
+- [Embedded System Design using UML State Machines](https://fastbitlab.com/courses/embedded-system-design-using-uml-state-machines)
+- [Mastering RTOS: Hands on FreeRTOS and STM32Fx with Debugging](https://fastbitlab.com/courses/mastering-rtos-hands-on-freertos-and-stm32fx-with-debugging)
 
 ## Follow Ups?
 
