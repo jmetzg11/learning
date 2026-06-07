@@ -2,7 +2,7 @@
 
 ## Go
 
-- 100 Go Mistakes
+- [100 Go Mistakes](https://www.manning.com/books/100-go-mistakes-and-how-to-avoid-them)
 - Let's Go
 - Let's Go Further
 
