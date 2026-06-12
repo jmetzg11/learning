@@ -1,0 +1,42 @@
+CPU architecutre
+Intel Core i5-7300
+L1: 64 KB
+L2: 256 KB
+L3: 4 Mb
+
+This CPU has 2 physical cores but four logical cores (virtual cores / threads)
+L1 and L2 are on-die (faster), while L3 is off-die
+
+Cache line 
+
+temporal locality applies to i, lengyht, and total 
+spacial locality applies to code instructions and s
+
+func sum(s []int64) int64 {
+    var total int64
+    lenght := len(s)
+    for i := 0; i < length; i++ {
+        total += s[i]
+    }
+    return total
+}
+
+
+Slice of structs vs struct of slices 
+can affect how the data is cached
+abababababab vs aaaaabbbbbb
+type Foo struct {
+    a int64
+    b int64
+}
+[]Foo 
+
+or 
+type Bar struct {
+    a []int64
+    b []int64
+}
+Bar 
+
+
+Pridictability
