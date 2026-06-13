@@ -1,0 +1,15 @@
+Go in Docker/Kubernetes
+
+Memory limits: Go's GC may not respect cgroup memory limits → OOM kills
+- Set GOMEMLIMIT env var to tell Go about container memory constraints
+- Without it, Go allocates freely and gets killed when it hits the hard limit
+
+CPU limits: Go creates GOMAXPROCS goroutines based on CPU cores it sees
+- In a container with CPU limits, Go may spawn more goroutines than the limit allows
+- Can hammer the scheduler, degrading performance
+- Set GOMAXPROCS explicitly if needed
+
+Readiness/liveness probes: Go apps start fast, but GC can cause brief pauses
+- Make probe timeouts reasonable to avoid killing healthy containers on GC spike
+
+Practical: always set GOMEMLIMIT and GOMAXPROCS to match container limits, monitor GC behavior

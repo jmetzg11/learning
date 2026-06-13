@@ -40,3 +40,36 @@ Bar
 
 
 Pridictability
+type node struct {
+    value int64
+    next *node
+}
+
+func linkedList(n *node) int64 {
+    var total int64
+    for n != nil {
+        total += n.value 
+        n = n.next
+    }
+    return total 
+}
+
+About 70% faster than the linkedList function, despide same spatial locality
+
+func sum2(s []int64) int64 {
+    var total int64
+    for i := 0; i < len(s); i += 2 {
+        total += s[i]
+    }
+    return total
+}
+
+Striding 
+Unit stride - all value are allocated contiguously  
+Constant stride - still predictable (slice, but with i+2)
+Non-unit stride - CPU can't predict (Linked list)
+
+
+Cache plament policy 
+
+WHO CARES! NOT MY PROGRAMS 
