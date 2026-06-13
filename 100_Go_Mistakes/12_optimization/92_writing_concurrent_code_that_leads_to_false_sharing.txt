@@ -1,0 +1,8 @@
+add some padding so the cache is isn't on the same memory 
+
+
+some crazy shit
+
+
+sharing memory across goroutines is an illusion at the lowest memroy levels 
+prevent performance issues with caching or commumication between goroutines 
