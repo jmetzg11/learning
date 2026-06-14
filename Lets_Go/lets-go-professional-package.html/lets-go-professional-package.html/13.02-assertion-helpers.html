@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+		<meta name="author" content="Alex Edwards">
+		<meta name="copyright" content="Copyright Alex Edwards 2026">
+		<title>Assertion helpers &mdash; Let's Go</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" href="assets/css/main.css">
+	</head>
+	<body>
+		<header>
+			<div class="wrapper">
+				<div>
+					
+						
+						<a href="00.00-front-matter.html">Let's Go</a> <span class="crumbs">&rsaquo; <a href="13.00-testing.html">Testing</a> &rsaquo; Assertion helpers</span>
+						
+					
+				</div>
+				<div>
+					&lsaquo; <a href="13.01-unit-testing-and-sub-tests.html">Previous</a>
+					&middot; <a href="00.01-contents.html">Contents</a> &middot;
+					<a href="13.03-testing-http-handlers-and-middleware.html">Next</a> &rsaquo;
+				</div>
+			</div>
+		</header>
+		<main class="wrapper text">
+			<div class="chapter">Chapter 13.2.</div>
+			<h2 id="assertion-helpers">Assertion helpers</h2>
+
+<p>Over the next few chapters we&rsquo;ll be writing a lot of <em>test assertions</em> that are a variation of this pattern:</p>
+
+<figure class="code go">
+<pre><span class="k">if</span> <span class="nx">got</span> <span class="o">!=</span> <span class="nx">want</span> <span class="p">{</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;got %v; want %v&#34;</span><span class="p">,</span> <span class="nx">got</span><span class="p">,</span> <span class="nx">want</span><span class="p">)</span>
+<span class="p">}</span></pre>
+</figure>
+
+<p>To avoid repetition and help make writing our tests quicker and easier, let&rsquo;s quickly abstract this code into a helper function.</p>
+
+<p>If you&rsquo;re following along, go ahead and create a new <code>internal/assert</code> package:</p>
+
+<figure class="code bash">
+<pre>$ mkdir internal/assert
+$ touch internal/assert/assert.go</pre>
+</figure>
+
+<p>And then add the following code:</p>
+
+<figure class="code go">
+<figcaption>File: internal/assert/assert.go</figcaption>
+<pre><span class="kn">package</span> <span class="nx">assert</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;testing&#34;</span>
+<span class="p">)</span>
+
+<span class="kd">func</span> <span class="nx">Equal</span><span class="p">[</span><span class="nx">T</span> <span class="nx">comparable</span><span class="p">]</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">,</span> <span class="nx">got</span><span class="p">,</span> <span class="nx">want</span> <span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nf">Helper</span><span class="p">(</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nx">got</span> <span class="o">!=</span> <span class="nx">want</span> <span class="p">{</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;got: %v; want: %v&#34;</span><span class="p">,</span> <span class="nx">got</span><span class="p">,</span> <span class="nx">want</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></pre>
+</figure>
+
+<p>Notice how <code>Equal()</code> is a <em>generic function</em>? This means that we&rsquo;ll be able to use it irrespective of what the type of the <code>actual</code> and <code>expected</code> values is. So long as both <code>actual</code> and <code>expected</code> have the <em>same</em> type and can be compared using the <code>!=</code> operator (for example, they are both <code>string</code> values, or both <code>int</code> values) our test code should compile and work fine when we call <code>Equal()</code>.</p>
+
+<aside class="note"><p>
+<strong>Note:</strong> The <a href="https://pkg.go.dev/testing#T.Helper"><code>t.Helper()</code></a> function that we&rsquo;re using in the code above indicates to the Go test runner that our <code>Equal()</code> function is a test helper. This means that when <code>t.Errorf()</code> is called from our <code>Equal()</code> function, the Go test runner will report the filename and line number of the code <em>which called</em> our <code>Equal()</code> function in the output.
+</p></aside>
+
+<p>With that in place, we can simplify our <code>TestHumanDate()</code> test like so:</p>
+
+<figure class="code go">
+<figcaption>File: cmd/web/templates_test.go</figcaption>
+<pre><span class="kn">package</span> <span class="nx">main</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;testing&#34;</span>
+    <span class="s">&#34;time&#34;</span>
+
+    <span class="s">&#34;snippetbox.alexedwards.net/internal/assert&#34;</span> <span class="c1">// New import
+</span><span class="c1"></span><span class="p">)</span>
+
+<span class="kd">func</span> <span class="nf">TestHumanDate</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">tests</span> <span class="o">:=</span> <span class="p">[</span><span class="p">]</span><span class="kd">struct</span> <span class="p">{</span>
+        <span class="nx">name</span> <span class="kt">string</span>
+        <span class="nx">tm</span>   <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span>
+        <span class="nx">want</span> <span class="kt">string</span>
+    <span class="p">}</span><span class="p">{</span>
+        <span class="p">{</span>
+            <span class="nx">name</span><span class="p">:</span> <span class="s">&#34;UTC&#34;</span><span class="p">,</span>
+            <span class="nx">tm</span><span class="p">:</span>   <span class="nx">time</span><span class="p">.</span><span class="nf">Date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">time</span><span class="p">.</span><span class="nx">UTC</span><span class="p">)</span><span class="p">,</span>
+            <span class="nx">want</span><span class="p">:</span> <span class="s">&#34;17 Mar 2024 at 10:15&#34;</span><span class="p">,</span>
+        <span class="p">}</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="nx">name</span><span class="p">:</span> <span class="s">&#34;Empty&#34;</span><span class="p">,</span>
+            <span class="nx">tm</span><span class="p">:</span>   <span class="nx">time</span><span class="p">.</span><span class="nx">Time</span><span class="p">{</span><span class="p">}</span><span class="p">,</span>
+            <span class="nx">want</span><span class="p">:</span> <span class="s">&#34;&#34;</span><span class="p">,</span>
+        <span class="p">}</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="nx">name</span><span class="p">:</span> <span class="s">&#34;CET&#34;</span><span class="p">,</span>
+            <span class="nx">tm</span><span class="p">:</span>   <span class="nx">time</span><span class="p">.</span><span class="nf">Date</span><span class="p">(</span><span class="mi">2024</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="nx">time</span><span class="p">.</span><span class="nf">FixedZone</span><span class="p">(</span><span class="s">&#34;CET&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="o">*</span><span class="mi">60</span><span class="o">*</span><span class="mi">60</span><span class="p">)</span><span class="p">)</span><span class="p">,</span>
+            <span class="nx">want</span><span class="p">:</span> <span class="s">&#34;17 Mar 2024 at 09:15&#34;</span><span class="p">,</span>
+        <span class="p">}</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span> <span class="nx">_</span><span class="p">,</span> <span class="nx">tt</span> <span class="o">:=</span> <span class="k">range</span> <span class="nx">tests</span> <span class="p">{</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nf">Run</span><span class="p">(</span><span class="nx">tt</span><span class="p">.</span><span class="nx">name</span><span class="p">,</span> <span class="kd">func</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nx">hd</span> <span class="o">:=</span> <span class="nf">humanDate</span><span class="p">(</span><span class="nx">tt</span><span class="p">.</span><span class="nx">tm</span><span class="p">)</span>
+
+            <span class="c1">// Use the new assert.Equal() helper to compare the expected and 
+</span><span class="c1"></span>            <span class="c1">// actual values.
+</span><span class="c1"></span>            <span class="nx">assert</span><span class="p">.</span><span class="nf">Equal</span><span class="p">(</span><span class="nx">t</span><span class="p">,</span> <span class="nx">hd</span><span class="p">,</span> <span class="nx">tt</span><span class="p">.</span><span class="nx">want</span><span class="p">)</span>
+        <span class="p">}</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span></pre>
+</figure>
+
+<p>Once you&rsquo;ve made that change, feel free to run the tests again and you should find that they still pass with no problems.</p>
+
+<figure class="code bash">
+<pre>$ go test -v ./cmd/web
+<samp>=== RUN   TestHumanDate
+=== RUN   TestHumanDate/UTC
+=== RUN   TestHumanDate/Empty
+=== RUN   TestHumanDate/CET
+--- PASS: TestHumanDate (0.00s)
+    --- PASS: TestHumanDate/UTC (0.00s)
+    --- PASS: TestHumanDate/Empty (0.00s)
+    --- PASS: TestHumanDate/CET (0.00s)
+PASS
+ok      snippetbox.alexedwards.net/cmd/web      0.003s</samp></pre>
+</figure>
+
+<h3 id="checking-non-comparable-types-and-nil-values">Checking non-comparable types and nil values</h3>
+
+<p>At the moment our <code>Equal()</code> function is nice and simple, but it has a couple of limitations.</p>
+
+<p>Firstly, not all types in Go can be compared using the <a href="https://go.dev/ref/spec#Comparison_operators">comparison operator</a> <code>!=</code>.
+Specifically, slices, maps, and functions (or any struct types containing those things) are <em>non-comparable</em>, meaning that our <code>Equal()</code> function will not work for those types.</p>
+
+<p>To get around this limitation, we should change the <code>Equal()</code> function to check for equality by using <a href="https://pkg.go.dev/reflect#DeepEqual"><code>reflect.DeepEqual()</code></a> instead of the <code>!=</code> operator.</p>
+
+<p>Secondly, there is a subtle and non-obvious problem if we want to check whether something equals <code>nil</code> or not. In Go, there may be times where an interface holds a <code>nil</code> value, but the interface itself does not equal <code>nil</code> &mdash; either when compared using the comparison operators or <code>reflect.DeepEqual()</code>. To get around this, we will need to write an <code>isNil()</code> helper function that uses the <code>reflect</code> package to determine whether the concrete value stored in the interface is <code>nil</code> or not.</p>
+
+<aside class="note"><p>
+<strong>Note:</strong> If the paragraph above is difficult to understand, that&rsquo;s OK. How interfaces work can take some time to wrap your head around, and it is not critical to the rest of the book to fully grasp it right now. But if you would like to dig into it, then <a href="https://www.adityathebe.com/golang-nil-interface-check/">this blog post</a> provides a great explanation and example of the <code>nil</code> interface issue described above, as does <a href="https://www.reddit.com/r/golang/comments/1bu5r72/subtle_and_surprising_behavior_when_interface/">this Reddit post</a> and accompanying comments.
+</p></aside>
+
+<p>Let&rsquo;s update our code to deal with these issues, and also introduce a couple of additional helper functions &mdash; <code>assert.True()</code> and <code>assert.Nil()</code> &mdash; that we can use to check if a value is <code>true</code> or <code>nil</code> respectively.</p>
+
+<figure class="code go">
+<figcaption>File: internal/assert/assert.go</figcaption>
+<pre><span class="kn">package</span> <span class="nx">assert</span>
+
+<span class="kn">import</span> <span class="p">(</span>
+    <span class="s">&#34;reflect&#34;</span> <span class="c1">// New import
+</span><span class="c1"></span>    <span class="s">&#34;testing&#34;</span>
+<span class="p">)</span>
+
+<span class="c1">// Update the signature so that T is of type any, instead of comparable. This 
+</span><span class="c1"></span><span class="c1">// will allow us to pass non-comparable types like slices and maps to it as 
+</span><span class="c1"></span><span class="c1">// arguments.
+</span><span class="c1"></span><span class="kd">func</span> <span class="nx">Equal</span><span class="p">[</span><span class="nx">T</span> <span class="nx">any</span><span class="p">]</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">,</span> <span class="nx">got</span><span class="p">,</span> <span class="nx">want</span> <span class="nx">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nf">Helper</span><span class="p">(</span><span class="p">)</span>
+
+    <span class="c1">// And call the isEqual() function below instead of using the != comparison 
+</span><span class="c1"></span>    <span class="c1">// operator.
+</span><span class="c1"></span>    <span class="k">if</span> <span class="p">!</span><span class="nf">isEqual</span><span class="p">(</span><span class="nx">got</span><span class="p">,</span> <span class="nx">want</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;got: %v; want: %v&#34;</span><span class="p">,</span> <span class="nx">got</span><span class="p">,</span> <span class="nx">want</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Add a helper to check that a value is true.
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">True</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">,</span> <span class="nx">got</span> <span class="kt">bool</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nf">Helper</span><span class="p">(</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">!</span><span class="nx">got</span> <span class="p">{</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;got: %t; want: true&#34;</span><span class="p">,</span> <span class="nx">got</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Add a helper to check that a value is nil, using the isNil() function below.
+</span><span class="c1"></span><span class="kd">func</span> <span class="nf">Nil</span><span class="p">(</span><span class="nx">t</span> <span class="o">*</span><span class="nx">testing</span><span class="p">.</span><span class="nx">T</span><span class="p">,</span> <span class="nx">got</span> <span class="nx">any</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">t</span><span class="p">.</span><span class="nf">Helper</span><span class="p">(</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">!</span><span class="nf">isNil</span><span class="p">(</span><span class="nx">got</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nx">t</span><span class="p">.</span><span class="nf">Errorf</span><span class="p">(</span><span class="s">&#34;got: %v; want: nil&#34;</span><span class="p">,</span> <span class="nx">got</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="kd">func</span> <span class="nx">isEqual</span><span class="p">[</span><span class="nx">T</span> <span class="nx">any</span><span class="p">]</span><span class="p">(</span><span class="nx">got</span><span class="p">,</span> <span class="nx">want</span> <span class="nx">T</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="c1">// First check if both values are nil using the isNil() function below.
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nf">isNil</span><span class="p">(</span><span class="nx">got</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="nf">isNil</span><span class="p">(</span><span class="nx">want</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Otherwise use reflect.DeepEqual to check if they are the same.
+</span><span class="c1"></span>    <span class="k">return</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">DeepEqual</span><span class="p">(</span><span class="nx">got</span><span class="p">,</span> <span class="nx">want</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">func</span> <span class="nf">isNil</span><span class="p">(</span><span class="nx">v</span> <span class="nx">any</span><span class="p">)</span> <span class="kt">bool</span> <span class="p">{</span>
+    <span class="c1">// Returns true if v equals nil.
+</span><span class="c1"></span>    <span class="k">if</span> <span class="nx">v</span> <span class="o">==</span> <span class="kc">nil</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">true</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Use reflection to check the underlying type of v, and return true if it
+</span><span class="c1"></span>    <span class="c1">// is a nullable type (e.g. pointer, map or slice) with a value of nil. 
+</span><span class="c1"></span>    <span class="nx">rv</span> <span class="o">:=</span> <span class="nx">reflect</span><span class="p">.</span><span class="nf">ValueOf</span><span class="p">(</span><span class="nx">v</span><span class="p">)</span>
+    <span class="k">switch</span> <span class="nx">rv</span><span class="p">.</span><span class="nf">Kind</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Chan</span><span class="p">,</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Func</span><span class="p">,</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Interface</span><span class="p">,</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Map</span><span class="p">,</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Pointer</span><span class="p">,</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">Slice</span><span class="p">,</span> <span class="nx">reflect</span><span class="p">.</span><span class="nx">UnsafePointer</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nx">rv</span><span class="p">.</span><span class="nf">IsNil</span><span class="p">(</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Other types like string, bool, int are never nil.
+</span><span class="c1"></span>    <span class="k">return</span> <span class="kc">false</span>
+<span class="p">}</span></pre>
+</figure>
+
+<p>And again, if you run <code>go test ./...</code> now, you should find that the tests continue to pass with no problems.</p>
+
+<aside class="note"><p>
+<strong>Note:</strong> As we&rsquo;ll see over the next few chapters, the <code>Equal()</code>, <code>True()</code> and <code>Nil()</code> assertion helpers will be sufficient for all of the tests that we want to do in this project. But in your own work, you can follow the same patterns and extend the <code>assert</code> package to include additional functions &mdash; for example, you might want to include a <code>NotEqual()</code> function to check that a value <em>doesn&rsquo;t</em> equal something, or a <code>MatchesRegexp()</code> helper to check that a string value matches a specific regular expression.
+</p></aside>
+
+		</main>
+		<footer>
+			<div class="wrapper">
+				<div>
+					&lsaquo; <a href="13.01-unit-testing-and-sub-tests.html">Previous</a>
+				</div>
+				<div>
+					<a href="00.01-contents.html">Contents</a>
+				</div>
+				<div>
+					<a href="13.03-testing-http-handlers-and-middleware.html">Next</a> &rsaquo;
+				</div>
+			</div>
+		</footer>
+		<script>
+			document.onkeydown = function(evt) {
+				evt = evt || window.event;
+				switch (evt.keyCode) {
+					
+					case 37:
+						window.location.href = "13.01-unit-testing-and-sub-tests.html";
+						break;
+						
+					
+					case 39:
+						window.location.href = "13.03-testing-http-handlers-and-middleware.html";
+						break;
+						
+				}
+			};
+		</script>
+	</body>
+</html>
+
