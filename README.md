@@ -3,7 +3,7 @@
 ## Go
 
 - [100 Go Mistakes](https://www.manning.com/books/100-go-mistakes-and-how-to-avoid-them) (June 13, 2026)
-- Let's Go
+- [Let's Go](https://lets-go.alexedwards.net/)
 - Let's Go Further
 
 ## Other
