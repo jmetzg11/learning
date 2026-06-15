@@ -1,9 +1,13 @@
 -- Runs automatically the first time the MySQL container initializes.
--- The `web` user is created by docker-compose.yml environment variables.
+-- The `web` user is created by docker-compose.yml environment variables,
+-- but we explicitly grant permissions here to be safe.
 
 -- Ensure the database exists with the correct charset/collation.
 CREATE DATABASE IF NOT EXISTS snippetbox CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE snippetbox;
+
+-- Grant explicit permissions to the web user.
+GRANT SELECT, INSERT, UPDATE, DELETE ON snippetbox.* TO 'web'@'%';
 
 CREATE TABLE snippets (
     id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
