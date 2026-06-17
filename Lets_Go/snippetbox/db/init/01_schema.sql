@@ -2,6 +2,11 @@
 -- The `web` user is created by docker-compose.yml environment variables,
 -- but we explicitly grant permissions here to be safe.
 
+-- Force this import connection to interpret the file's bytes as utf8mb4.
+-- Without it, the docker-entrypoint mysql client reads the UTF-8 file as
+-- latin1 and double-encodes multibyte chars (e.g. the en-dash) into mojibake.
+SET NAMES utf8mb4;
+
 -- Ensure the database exists with the correct charset/collation.
 CREATE DATABASE IF NOT EXISTS snippetbox CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE snippetbox;
