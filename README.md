@@ -6,9 +6,6 @@
 - [Let's Go](https://lets-go.alexedwards.net/)
 - Let's Go Further
 
-## Other
-
-- D3.js in Action
 
 ## IoT
 
@@ -24,13 +21,25 @@
 - Cosmic Python (do in python and go)
 - Designing Data-Intensive Application
 
+## K8s (or maybe K3s?)
+- Endpoints that are supposed to sweat. One is CPU heavy, one is DB heavy, one for 'FE', and one is temporal heavy 
+- K8s, deploy with strict CPU and memory limits 
+- Hit endpoints and observe HPA and usage through UI
+
+## Other
+
+- D3.js in Action
+
 ## Final Project
 
 Modern Treasury: Accountoing For Developers
 
 - Build along with Go
-- UI to hit endpoints and display D3 graphs
+- UI to hit endpoints
+- Add a geographical component. Go with a logistics theme 
 - Deploy demo as a learning tool
+- Simulate high traffic and watch in K8s 
+- Have some custom geographical graphs with D3 
 
 ## Follow Ups?
 
@@ -39,10 +48,3 @@ Modern Treasury: Accountoing For Developers
 - Database Internals
 - hightscalability.com
 - https://github.com/donnemartin/system-design-primer
-  embedded stuff
-- Making Embedded Systems
-- Embedonomicon
-- Embassy.dev
-- Ferrocene / Ferrous Systems Blog
-- Building Real-World Embedded Systems with Rust
-- Simplified Embedded Rust
