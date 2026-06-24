@@ -14,6 +14,8 @@
 - [Mastering Microcontroller: Timers, PWM, CAN, Low Power (MCU2)](https://fastbitlab.com/courses/mastering-microcontroller-timers-pwm-can-low-power-mcu2)
 - [Embedded System Design using UML State Machines](https://fastbitlab.com/courses/embedded-system-design-using-uml-state-machines)
 - [Mastering RTOS: Hands on FreeRTOS and STM32Fx with Debugging](https://fastbitlab.com/courses/mastering-rtos-hands-on-freertos-and-stm32fx-with-debugging)
+- [STM32 AWS IoT Core Bootcamp: MQTT, OTA Updates, ESP32 WIFI](https://fastbitlab.com/courses/stm32-aws-iot-core-bootcamp-mqtt-ota-updates-esp32-wifi)
+- [STM32Fx Microcontroller Custom Bootloader Development](https://fastbitlab.com/courses/stm32fx-microcontroller-custom-bootloader-development)
 
 ## Architecture
 
