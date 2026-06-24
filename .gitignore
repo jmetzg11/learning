@@ -6,5 +6,4 @@ main
 *.so
 *.dylib
 
-# Rust
-**/target/
+tsl/
