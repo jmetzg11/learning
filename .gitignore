@@ -5,5 +5,33 @@ main
 *.dll
 *.so
 *.dylib
+*.out
+*.bin
 
+# Object and compiled files
+*.o
+*.a
+*.d
+
+# Build directories
+build/
+Debug/
+Release/
+.build/
+cmake-build-debug/
+cmake-build-release/
+
+# Go
+*.test
+vendor/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Project-specific
 tsl/

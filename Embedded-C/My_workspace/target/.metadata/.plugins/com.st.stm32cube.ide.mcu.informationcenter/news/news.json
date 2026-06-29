@@ -1,0 +1,22 @@
+data='[ \
+	{ \
+		"image": "news/CubeIDE_MX_split.png", \
+		"link": "https://community.st.com/t5/developer-news/stm32cubeide-2-0-0-interoperability-instead-of-integration/ba-p/856658", \
+		"caption": "" \
+	}, \
+	{ \
+			"image": "news/Visual-1-GCC14.png", \
+			"link": "", \
+			"caption": "" \
+		}, \
+	{ \
+		"image": "news/LLVMinToolchain.png", \
+		"link": "", \
+		"caption": "" \
+	}, \
+	{ \
+		"image": "news/VS_Code.png", \
+		"link": "https://www.st.com/content/st_com/en/stm32-mcu-developer-zone/software-development-tools/stm32cubevscode.html", \
+		"caption": "" \
+	} \
+]';
