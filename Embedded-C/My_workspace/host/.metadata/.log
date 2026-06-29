@@ -10,3 +10,18 @@ Command-line arguments:  -os linux -ws gtk -arch x86_64 -data /home/jmetzg11/Des
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-27 22:59:17.580
 !MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-06-28 07:12:07.281 -----------------------------------------------
+eclipse.buildId=Version 2.1.1
+java.version=21.0.9
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-06-28 07:12:20.115
+!MESSAGE Log4j2 initialized with config file /home/jmetzg11/Desktop/learning/Embedded-C/My_workspace/host/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-06-28 07:12:22.057
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-06-28 07:15:23.306
+!MESSAGE Indexed '000TestProject' (0 sources, 0 headers) in 0 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
