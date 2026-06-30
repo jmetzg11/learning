@@ -33,5 +33,12 @@ vendor/
 *~
 .DS_Store
 
+# Eclipse / STM32CubeIDE workspace metadata
+.metadata/
+.settings/
+*.pdom
+*.snap
+*.ide.log*
+
 # Project-specific
 tsl/
