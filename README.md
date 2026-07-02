@@ -32,17 +32,6 @@
 
 - D3.js in Action
 
-## Final Project
-
-Modern Treasury: Accountoing For Developers
-
-- Build along with Go
-- UI to hit endpoints
-- Add a geographical component. Go with a logistics theme
-- Deploy demo as a learning tool
-- Simulate high traffic and watch in K8s
-- Have some custom geographical graphs with D3
-
 ## Follow Ups?
 
 - A Philosophy of Software Design
