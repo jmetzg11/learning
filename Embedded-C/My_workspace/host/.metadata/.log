@@ -79,3 +79,12 @@ java.io.FileNotFoundException: /home/jmetzg11/Desktop/learning/Embedded-C/My_wor
 
 !ENTRY org.eclipse.cdt.core 1 0 2026-07-04 13:05:59.419
 !MESSAGE Indexed 'Average' (0 sources, 0 headers) in 0 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-07-04 22:10:05.376
+!MESSAGE Indexed 'ASCII' (0 sources, 0 headers) in 0.001 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-07-04 22:20:08.336
+!MESSAGE Indexed 'getchar' (0 sources, 0 headers) in 0 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-07-04 22:25:03.109
+!MESSAGE Indexed 'floatCharge' (0 sources, 0 headers) in 0 sec: 0 declarations; 0 references; 0 unresolved inclusions; 0 syntax errors; 0 unresolved names (0%)
