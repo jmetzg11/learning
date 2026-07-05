@@ -47,3 +47,8 @@ Startup/
 
 # Project-specific
 tsl/
+
+# TLS certs / private keys — never commit
+*.pem
+*.key
+tls/
