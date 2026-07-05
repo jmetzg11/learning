@@ -40,5 +40,10 @@ vendor/
 *.snap
 *.ide.log*
 
+# STM32CubeIDE per-project generated files (MCU-pinned, regenerated on project creation)
+*.ld
+*.s
+Startup/
+
 # Project-specific
 tsl/
