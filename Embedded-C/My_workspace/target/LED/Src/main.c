@@ -16,6 +16,14 @@
  ******************************************************************************
  */
 
+// RCC base address 0x4002 3800 - 0x4002 3BFF
+// AHB1 offset 0x30
+
+// GPIOD 0x4002 0C00 - 0x4002 0FFF
+// GPIO Mode offset 0x00
+// GPIO Output data offset 0x14
+
+#include <stdint.h>
 #include <stdint.h>
 
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
@@ -24,6 +32,16 @@
 
 int main(void)
 {
+	uint32_t *pClkCtrlReg = (unit_32t*)0x40023830;
+	uint32_t *pPrtDModeReg = (unit_32t*)0x40020C00;
+	uint32_t *pClkctrlreg = (unit_32t*)0x40020C14;
+
+	// 1. enable the clock for 3rd bit with mask value
+	*pClkCtrlReg |= 0x08;
+
+	// 2. configure the mode as output, 25 and 24 position should be 01
+
+
     /* Loop forever */
 	for(;;);
 }
