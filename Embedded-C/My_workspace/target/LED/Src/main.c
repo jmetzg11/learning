@@ -29,19 +29,33 @@
 #if !defined(__SOFT_FP__) && defined(__ARM_FP)
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
+void delay(uint32_t count) {
+	for(uint32_t i = 0; i < count; i++);
+}
 
 int main(void)
 {
-	uint32_t *pClkCtrlReg = (unit_32t*)0x40023830;
-	uint32_t *pPrtDModeReg = (unit_32t*)0x40020C00;
-	uint32_t *pClkctrlreg = (unit_32t*)0x40020C14;
+	uint32_t *pClkCtrlReg = (uint32_t*)0x40023830;
+	uint32_t *pPortDModeReg = (uint32_t*)0x40020C00;
+	uint32_t *pPortDOutReg = (uint32_t*)0x40020C14;
 
 	// 1. enable the clock for 3rd bit with mask value
-	*pClkCtrlReg |= 0x08;
+	uint32_t temp = *pClkCtrlReg; // read operation
+	temp = temp | 0x08; // modify
+	*pClkCtrlReg = 0x08; // write
 
 	// 2. configure the mode as output, 25 and 24 position should be 01
+	// a. clear the 24th and 25th bit positions (clear
+	*pPortDModeReg &= 0xFCFFFFFF;
+	// b. make 24th bit position as 1 (SET)
+	*pPortDModeReg |= 0x01000000;
 
+	// 3. SET 12 bit of the output data register to make I/O pin-12 as HIGH
+	while(1){
+		*pPortDOutReg |= 0x1000;
+		delay(800000);
+		*pPortDOutReg &= ~0x1000;
+		delay(200000);
+	}
 
-    /* Loop forever */
-	for(;;);
 }
