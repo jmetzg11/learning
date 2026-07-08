@@ -44,17 +44,30 @@ int main(void)
 	temp = temp | 0x08; // modify
 	*pClkCtrlReg = 0x08; // write
 
+	// *pClkCrlReg |= (1 << 3);
+
 	// 2. configure the mode as output, 25 and 24 position should be 01
 	// a. clear the 24th and 25th bit positions (clear
 	*pPortDModeReg &= 0xFCFFFFFF;
+
+	// *pPortDModeReg &= ~(1 << 24);
+	// *pPortDModeReg &= ~(1 << 25);
+
+	// or even better
+	// *pPortDModeReg &= ~(3 << 24);
+
 	// b. make 24th bit position as 1 (SET)
 	*pPortDModeReg |= 0x01000000;
+
+	// *pPortDModeReg |= (1 << 24);
 
 	// 3. SET 12 bit of the output data register to make I/O pin-12 as HIGH
 	while(1){
 		*pPortDOutReg |= 0x1000;
+		// *pPortDOutReg |= (1 << 12);
 		delay(800000);
 		*pPortDOutReg &= ~0x1000;
+		// *pPortDoutReg &= ~(1 << 12):
 		delay(200000);
 	}
 
