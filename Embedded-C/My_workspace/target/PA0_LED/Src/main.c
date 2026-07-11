@@ -18,11 +18,10 @@
 
 /*
  * Plan
- * find address PA0, LED3 (orange) and LED4 (green) and LED6 (blue)
+ * find address PA0, PD13 LED3 (orange) and PD12 LED4 (green)
  * read PA0 for 1 or 0
  * if 1 turn on LED4
  * if 0 turn on LED3.
- * if in between turn on LED6
  */
 
 
@@ -32,14 +31,66 @@
   #warning "FPU is not initialized, but the project is compiling for an FPU. Please initialize the FPU before use."
 #endif
 
+// memory address for GPIOA and GPIOD
 uint32_t *pGPIOA = (uint32_t*)0x40020000;
-unit32_t const AHB1ClockA = 0;
+uint32_t *pGPIOA_IDR = (uint32_t*)(0x40020000 + 0x10);
 
 uint32_t *pGPIOD = (uint32_t*)0x40020C00;
-uint32_t const AHB1ClockD = 3;
+uint32_t *pGPIOD_ODR = (uint32_t*)(0x40020C00 + 0x14);
+
+// RCC memory address: Base: 0x40023800, Offset: 0x30
+uint32_t *pRCC_AHB1ENR = (uint32_t*)(0x40023800 + 0x30);
+
+// RCC AHB1 peripheral clock enable
+uint32_t const GPIOAEN_BIT = 0;
+uint32_t const GPIODEN_BIT = 3;
+
+// Mode offset
+uint32_t ModeOffSet = 0x00;
+
+// mode, all GPIO ports (A-K) are identical in layout.
+uint32_t const input_mode = 0x0;
+uint32_t const output_mode = 0x1;
+
+uint32_t const GPIO_Bit_0 = 0;
+uint32_t const GPIO_Bit_12 = 24;
+uint32_t const GPIO_Bit_13 = 26;
+
 
 int main(void)
 {
-    /* Loop forever */
-	for(;;);
+    // 1. Turn on clock for GPIOA
+	*pRCC_AHB1ENR |= (1 << GPIOAEN_BIT);
+
+	// 2. Turn on clock for GPIOD
+	*pRCC_AHB1ENR |= (1 << GPIODEN_BIT);
+
+	// 3. Set mode for PA0
+	*pGPIOA &= ~(0x3 << GPIO_Bit_0);
+	*pGPIOA |= (input_mode << GPIO_Bit_0);
+
+	// 4. Set mode for PD12
+	*pGPIOD &= ~(0x3 << GPIO_Bit_12);
+	*pGPIOD |= (output_mode << GPIO_Bit_12);
+
+	// 5. Set mode for PD13
+	*pGPIOD &= ~(0x3 << GPIO_Bit_13);
+	*pGPIOD |= (output_mode << GPIO_Bit_13);
+
+	while(1){
+		// read PA0
+		uint32_t pa0 = (*pGPIOA_IDR >> 0) & 0x1;
+
+		if (pa0 > 0) {
+			// if 1 send 1 to PD12
+			*pGPIOD_ODR |= (1 << 12);
+			*pGPIOD_ODR &= ~(1 << 13);
+
+		} else {
+			// if 0 send 1 to PD13
+			*pGPIOD_ODR |= (1 << 13);
+			*pGPIOD_ODR &= ~(1 << 12);
+
+		}
+	}
 }
