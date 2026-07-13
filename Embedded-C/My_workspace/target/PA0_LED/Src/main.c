@@ -32,11 +32,11 @@
 #endif
 
 // memory address for GPIOA and GPIOD
-uint32_t *pGPIOA = (uint32_t*)0x40020000;
-uint32_t *pGPIOA_IDR = (uint32_t*)(0x40020000 + 0x10);
+uint32_t volatile *pGPIOA = (uint32_t*)0x40020000;
+uint32_t volatile *pGPIOA_IDR = (uint32_t*)(0x40020000 + 0x10);
 
-uint32_t *pGPIOD = (uint32_t*)0x40020C00;
-uint32_t *pGPIOD_ODR = (uint32_t*)(0x40020C00 + 0x14);
+uint32_t volatile *pGPIOD = (uint32_t*)0x40020C00;
+uint32_t volatile *pGPIOD_ODR = (uint32_t*)(0x40020C00 + 0x14);
 
 // RCC memory address: Base: 0x40023800, Offset: 0x30
 uint32_t *pRCC_AHB1ENR = (uint32_t*)(0x40023800 + 0x30);
@@ -44,9 +44,6 @@ uint32_t *pRCC_AHB1ENR = (uint32_t*)(0x40023800 + 0x30);
 // RCC AHB1 peripheral clock enable
 uint32_t const GPIOAEN_BIT = 0;
 uint32_t const GPIODEN_BIT = 3;
-
-// Mode offset
-uint32_t ModeOffSet = 0x00;
 
 // mode, all GPIO ports (A-K) are identical in layout.
 uint32_t const input_mode = 0x0;
