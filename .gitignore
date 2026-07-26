@@ -40,6 +40,12 @@ vendor/
 *.snap
 *.ide.log*
 
+# Debug launch configs — hardcode absolute paths, regenerated on first Debug run
+*.launch
+*.elf
+*.map
+*.list
+
 # STM32CubeIDE per-project generated files (MCU-pinned, regenerated on project creation)
 *.ld
 *.s

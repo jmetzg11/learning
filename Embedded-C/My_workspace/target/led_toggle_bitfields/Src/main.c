@@ -25,9 +25,27 @@
 
 int main(void)
 {
-	uint32_t *pClkCtrlReg = (uint32_t*)(0x40023800+0x30);
-	uint32_t *pPortDModeReg = (uint32_t*)(0x40020C00+0x00);
-	uint32_t *pPortDOutReg = (u)
+	RCC_AHB1ENR_t volatile *const pClkCtrlReg = (RCC_AHB1ENR_t*)(0x40023800+0x30);
+	GPIOx_MODE_t volatile *const pPortDModeReg = (GPIOx_MODE_t*)(0x40020C00+0x00);
+	GPIOx_ODR_t volatile *const pPortDOutReg = (GPIOx_ODR_t*)(0x40020C00+0x14);
+
+	// enable the clock for GPIOD peripheral in the AHB1EN
+	pClkCtrlReg->gpiod_en = 1;
+
+	// configure the mode IO pin as output
+	pPortDModeReg->pin_12 = 1;
+
+	while(1){
+		// make 12th pin high
+		pPortDOutReg->pin_12 = 1;
+
+		for(uint32_t i=0; i < 300000; i++);
+
+		pPortDOutReg->pin_12 = 0;
+
+		for(uint32_t i=0; i < 900000; i++);
+	}
+
     /* Loop forever */
 	for(;;);
 }
