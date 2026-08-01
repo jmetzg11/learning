@@ -8,7 +8,7 @@
 
 ## IoT
 
-- [Microcontroller Embedded C Programming](https://fastbitlab.com/courses/microcontroller-embedded-c-programming-absolute-beginners)
+- [Microcontroller Embedded C Programming](https://fastbitlab.com/courses/microcontroller-embedded-c-programming-absolute-beginners) (July 31, 2026)
 - [Embedded Systems Programming on ARM Cortext-M3/M4 Processor](https://fastbitlab.com/courses/embedded-systems-programming-on-arm-cortex-m3-m4-processor)
 - [Mastering Microcontroller and Embedded Driver Development (MCU1)](https://fastbitlab.com/courses/mastering-microcontroller-and-embedded-driver-development)
 - [Mastering Microcontroller: Timers, PWM, CAN, Low Power (MCU2)](https://fastbitlab.com/courses/mastering-microcontroller-timers-pwm-can-low-power-mcu2)
