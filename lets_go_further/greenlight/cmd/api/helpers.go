@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json/v2"
 	"errors"
 	"net/http"
 	"strconv"
@@ -8,7 +9,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-func (app *application) readIDParam(r *http.Request) (int, err) {
+func (app *application) readIDParam(r *http.Request) (int, error) {
 	params := httprouter.ParamsFromContext(r.Context())
 
 	id, err := strconv.Atoi(params.ByName("id"))
@@ -17,4 +18,25 @@ func (app *application) readIDParam(r *http.Request) (int, err) {
 	}
 
 	return id, nil
+}
+
+func (app *application) writeJSON(w http.ResponseWriter, status int, data any, headers http.Header) error {
+	js, err := json.Marshal(data, json.Deterministic(true))
+	if err != nil {
+		return err
+	}
+
+	js = append(js, '\n')
+
+	for key, values := range headers {
+		for _, value := range values {
+			w.Header().Add(key, value)
+		}
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	w.Write(js)
+
+	return nil
 }
