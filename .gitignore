@@ -59,3 +59,7 @@ tsl/
 *.key
 tls/
 RemoteSystemsTempFiles/
+
+# Purchased books — never commit
+lets_go_further/lets-go-further.html/
+Lets_Go/lets-go-professional-package.html/
