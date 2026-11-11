@@ -23,6 +23,7 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 		ID:        id,
 		CreatedAt: time.Now(),
 		Title:     "Casablance",
+		// Runtime: models.Runtime(time.Hour + 42*time.Minute),
 		Genres:    []string{"romance", "drama", "war"},
 		Version:   1,
 	}

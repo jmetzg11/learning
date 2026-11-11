@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	"github.com/julienschmidt/httprouter"
+	"greenlight.jmetzg11/internal/models"
 )
 
 func (app *application) readIDParam(r *http.Request) (int, error) {
@@ -27,7 +28,9 @@ func (app *application) writeJSON(w http.ResponseWriter, status int, data envelo
 	opts := []json.Options{
 		json.Deterministic(true),
 		jsontext.Multiline(true),
+		json.WithMarshalers(models.RuntimeMarshaler),
 	}
+
 	js, err := json.Marshal(data, opts...)
 	if err != nil {
 		return err
