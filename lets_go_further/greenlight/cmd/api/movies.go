@@ -33,3 +33,19 @@ func (app *application) showMovieHandler(w http.ResponseWriter, r *http.Request)
 		app.serverErrorResponse(w, r, err)
 	}
 }
+
+func (app *application) createMovieHandler(w http.ResponseWriter, r *http.Request) {
+	var input struct {
+		Title string `json:"title"`
+		Year int `json:"year"`
+		Genres []string `json:"genres"`
+	}
+
+	err := json.UnmarshallRead(r.Body &input)
+	if err != nil {
+		app.errorResponse(w, r http.StatusBadRequest, err.Error())
+		return
+	}
+
+	fmt.Fprintf(w, "+v\n", input)
+}
